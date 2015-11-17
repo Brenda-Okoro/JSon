@@ -1,5 +1,6 @@
 package testjson;
 
+import org.json.me.JSONArray;
 import org.json.me.JSONException;
 import org.json.me.JSONObject;
 
@@ -15,34 +16,39 @@ public class TestJson {
     public static void main(String[] args) {
         // TODO code application logic here
 
-        String json = "{'country' : 'Nigeria' , 'weather' : 'Weather condition for today: Cloudy'}";
-        String coord = "{'lon' : longitude 8.675277 , 'lat' :latitude 9.081999}";
-        String weather = "{'main' : 'Cloud' , 'description' : 'overcast clouds' , 'icon' : '04N'}";
-        String main = "{'humidity' : The average daily relative humidity for November is around 82% , 'pressure' : pressure is 1013 in Pascal , 'temp_min' : '20 degree Celcius Maximum temperature' , 'temp_max' : '35 degree Celcius maximum temperature'}";
-       
-
+        String nestedJson = "{\"coord\":{\"lon\":139,\"lat\":35},\n" +
+"\"sys\":{\"country\":\"Nigeria\",\"sunrise\":1369769524,\"sunset\":1369821049},\n" +
+"\"weather\":[{\"id\":804,\"main\":\"clouds\",\"description\":\"overcast clouds\",\"icon\":\"04n\"}],\n" +
+"\"main\":{\"temp\":289.5,\"humidity\":89,\"pressure\":1013,\"temp_min\":287.04,\"temp_max\":292.04},\n" +
+"\"wind\":{\"speed\":7.31,\"deg\":187.002},\n" +
+"\"rain\":{\"3h\":0},\n" +
+"\"clouds\":{\"all\":92},\n" +
+"\"dt\":1369824698,\n" +
+"\"id\":1851632,\n" +
+"\"name\":\"Shuzenji\",\n" +
+"\"cod\":200}";
+               
         try {
-            JSONObject jsonObject = new JSONObject(json);
-            JSONObject jsonObject1 = new JSONObject (coord);
-            JSONObject jsonObject2 = new JSONObject (weather);
-            JSONObject jsonObject3 = new JSONObject (main);
+            JSONObject jsonObject = new JSONObject (nestedJson);
             
-            System.out.println(jsonObject.getString("country"));
-            System.out.println(jsonObject1.getString ("lon"));
-            System.out.println(jsonObject1.getString ("lat"));
-            System.out.println(jsonObject.getString("weather"));
-            System.out.println(jsonObject2.getString ("description"));
-            System.out.println(jsonObject3.getString ("humidity"));
-            System.out.println(jsonObject3.getString ("pressure"));
-            System.out.println(jsonObject3.getString ("temp_min"));
-            System.out.println(jsonObject3.getString ("temp_max"));
-            
+            JSONObject sys = jsonObject.getJSONObject("sys");
+            JSONArray weather = jsonObject.getJSONArray("weather");
+            JSONObject weather_one = weather.getJSONObject(0);
+            JSONObject weather_two = weather.getJSONObject(0);
+            JSONObject main = jsonObject.getJSONObject("main");
+                         
+            String level = (String) sys.get("country");
+            String level1 = weather_one.getString("description");
+            String level2 = (String) main.get("temp_min");
+            String level3 = (String) main.get("temp_max");
+            String level4 = weather_two.getString("icon");
            
-           // if(jsonObject.has("temp_max"))
-                 //System.out.println(jsonObject.getString("temp_max"));
-           // else
-              //  System.out.println(jsonObject.optString("maxTemperature", " Maximum temperature Not  Available"));
-
+            System.out.println(level);
+            System.out.println(level1);
+            System.out.println(level2);
+            System.out.println(level3);
+            System.out.println(level4);
+         
         } catch (JSONException e) {
             e.printStackTrace();
         };
